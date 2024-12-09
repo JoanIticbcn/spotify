@@ -1,0 +1,27 @@
+body{
+    background-color: lightgreen;
+    margin: 50px 50px 110px 110px;
+}
+h2{
+    color: green;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#navegar{
+    display: flex;
+    flex-direction: row;
+}
+#navegar *{
+    margin-left: 9px;
+}
+button{
+    color: white;
+    background-color: green;
+    border-radius: 3px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 30px;
+}
