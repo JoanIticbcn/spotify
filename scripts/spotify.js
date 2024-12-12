@@ -7,6 +7,7 @@ btnBuscar.disabled = true;
 btnBorrar.disabled = true;
 let tokenacces;
 
+//Primer Endpoint
 const getSpotifyAccessToken = function (clientId, clientSecret) {
     // Url de l'endpont de spotify
     const url = "https://accounts.spotify.com/api/token";
@@ -32,7 +33,7 @@ const getSpotifyAccessToken = function (clientId, clientSecret) {
       .then((data) => {
         // Al data retorna el token d'accés que necessitarem
         // Haurem d’habilitar els botons “Buscar” i “Borrar”
-        tokenacces = data.acces_token
+        tokenacces = data.access_token
         btnBuscar.disabled = false
         btnBorrar.disabled = false
       })
@@ -41,4 +42,43 @@ const getSpotifyAccessToken = function (clientId, clientSecret) {
         console.error("Error a l'obtenir el token:", error);
       });
     };
+
+//Segon endpoint
+const searchSpotifyTracks = function (query, accessToken) {
+  // Definim l’endpoint, la query és el valor de búsqueda.
+  // Limitem la búsqueda a cançons i retornarà 12 resultats.
+  const searchUrl =
+    `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+      query
+    )}&type=track&limit=12`;
+
+
+  // Al headers sempre s’ha de posar la mateixa informació.
+  fetch(searchUrl, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+     // Controlem si la petició i la resposta han anat bé. 
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data)
+    })
+    .catch((error) => {
+      console.error("Error al buscar cançons:", error);
+    });
+};
+//Funcio search track
+const search = function(){
+  let trak = document.getElementById("inputsong").value
+  searchSpotifyTracks(trak,tokenacces)
+}
+btnBuscar.addEventListener("click",search)
 getSpotifyAccessToken(clientId,clientSecret)

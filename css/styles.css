@@ -1,9 +1,10 @@
 body{
-    background-color: lightgreen;
+    background-color: #121212;
     margin: 50px 50px 110px 110px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 h2{
-    color: green;
+    color: #1dd960;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 #navegar{
@@ -14,9 +15,9 @@ h2{
     margin-left: 9px;
 }
 button{
+    background-color: #1dd960;
     color: white;
-    background-color: green;
-    border-radius: 3px;
+    border-radius: 10px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
     display: flex;
@@ -24,4 +25,37 @@ button{
     align-items: center;
     width: 80px;
     height: 30px;
+}
+button:hover{
+    background-color: #121212;
+}
+main{
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+section#cancons{
+    border: 1px solid #121212;
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 8%;
+    align-items: center;
+    justify-content: center;
+    background-color:#1dd960;
+}
+section#lateral{
+    border: 1px solid #121212;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    background-color: #1dd960;
 }
