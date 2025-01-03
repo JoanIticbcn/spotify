@@ -26,23 +26,21 @@ button{
     width: 80px;
     height: 30px;
 }
-button:hover{
-    background-color: #121212;
-}
+
 main{
     display: flex;
     flex-direction: row;
     margin-top: 15px;
     margin-bottom: 15px;
 }
-section#cancons{
+#cancons{
     border: 1px solid #121212;
     width: 70%;
     height: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    border-radius: 8%;
+    border-radius: 1%;
     align-items: center;
     justify-content: center;
     background-color:#1dd960;
@@ -58,4 +56,36 @@ section#lateral{
     justify-content: center;
     margin-left: 10px;
     background-color: #1dd960;
+    overflow: hidden;
+}
+
+section#lateral img{
+    width: 50%;
+    height: auto;
+    border-radius: 5%;
+}
+.track{
+    height: 280px;
+    width: 30%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 3px 3px 3px 3px;
+    background-color: white;
+    border-radius: 10%;
+    padding: 3px;
+}
+
+.track img{
+    height: 55%;
+    width: 55%;
+    object-fit: contain;
+}
+
+.track h1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
 }
