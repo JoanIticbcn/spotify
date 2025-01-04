@@ -7,10 +7,12 @@ btnBuscar.disabled = true;
 btnBorrar.disabled = true;
 document.getElementById("cancons").textContent = "Fes una busqueda"
 let tokenacces;
+let topTrackstext;
 
 btnBorrar.addEventListener("click", function () {
   document.getElementById("cancons").innerHTML = ""
   document.getElementById("cancons").textContent = "Fes una busqueda"
+  document.getElementById("lateral").innerHTML = "<p>" + "Informació artista" + "</p>" + "<p>" + "Llista cançons" + "</p>"
 })
 
 //Primer Endpoint
@@ -79,12 +81,19 @@ const searchSpotifyTracks = function (query, accessToken) {
       for (let i = 0; i < data.tracks.items.length; i++) {
         let Objdiv = document.createElement("div");
         let ObjResult = document.getElementById("cancons");
+        let ButtonAfegir = document.createElement("button");
+        ButtonAfegir.textContent = "+ Afegir cançó"
+        ButtonAfegir.className = "afegirc"
+        ButtonAfegir.addEventListener("click", function () {
+          pass
+        })
         Objdiv.className = "track";
         Objdiv.textContent = data.tracks.items[i].name;
         Objdiv.addEventListener("click", function () {
           buscarartista(data.tracks.items[i].artists[0].id)
         })
-        Objdiv.innerHTML = "<h1>" + data.tracks.items[i].name + "</h1>" + "<img src=" + data.tracks.items[i].album.images[0].url + ">" + "<h1>" + data.tracks.items[i].artists[0].name + "<h1>" + "<h1>" + data.tracks.items[i].album.name + "<h1>";
+        Objdiv.innerHTML = "<h1>" + data.tracks.items[i].name + "</h1>" + "<img src=" + data.tracks.items[i].album.images[0].url + ">" + "<h1>" + data.tracks.items[i].artists[0].name + "</h1>" + "<h1>" + data.tracks.items[i].album.name + "</h1>";
+        Objdiv.appendChild(ButtonAfegir)
         ObjResult.appendChild(Objdiv);
       }
     })
@@ -108,18 +117,44 @@ const buscarartista = function (idartist) {
       Authorization: `Bearer ${tokenacces}`,
       "Content-Type": "application/json",
     },
-  }).then((response) => { return response.json() }).then((data) => {
-     imatgeArtista = data.images[0].url
-     nomdelgrup = data.name
-     popularitat = data.popularity
-     generes = data.genres
-     seguidors = data.followers.total
-    artistaInformaciolateral(imatgeArtista,nomdelgrup,popularitat,generes,seguidors)
-  })
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+    return response.json()
+  }).then((data) => {
+    imatgeArtista = data.images[0].url
+    nomdelgrup = data.name
+    popularitat = data.popularity
+    generes = data.genres
+    seguidors = data.followers.total
+    artistaInformaciolateral(imatgeArtista, nomdelgrup, popularitat, generes, seguidors, idartist)
+  }).catch((error) => {
+    console.error("Error al buscar l'artista:", error);
+  });
 }
 
-const artistaInformaciolateral = function (imatgeArtista,nomdelgrup,popularitat,generes,seguidors) {
-  document.getElementById("lateral").innerHTML = "***" + "<img src=" + imatgeArtista + ">" + "<p>" + nomdelgrup + "<p>"+ "<p>" + popularitat + "<p>" +"<p>" + generes + "<p>"+ "<p>" + seguidors + "<p>"+"<h1> TOP TRACKS<h1>"
+const artistaInformaciolateral = function (imatgeArtista, nomdelgrup, popularitat, generes, seguidors, idartist) {
+  getTopTracks(imatgeArtista, nomdelgrup, popularitat, generes, seguidors, idartist)
+}
+
+const getTopTracks = function (imatgeArtista, nomdelgrup, popularitat, generes, seguidors, idartist) {
+  const url = `https://api.spotify.com/v1/artists/${idartist}/top-tracks`;
+  fetch(url,{
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${tokenacces}`,
+      "Content-Type": "application/json",
+    },
+  }).then((response)=>{
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+    return response.json()
+  }).then((data)=>{
+    document.getElementById("lateral").innerHTML = "***" + "<img src=" + imatgeArtista + ">" + "<h1>" + nomdelgrup + "</h1>" + "<h4>Populartitat </h4>" + "<p>" + popularitat + "</p>" + "<h4>Generes </h4>" + "<p>" + generes + "</p>" + "<h4>Seguidors </h4>" + "<p>" + seguidors + "</p>" + "<h1> TOP TRACKS</h1>"+"<p>"+data.tracks[0].name+"</p>"+"<p>"+data.tracks[1].name+"</p>"+"<p>"+data.tracks[2].name+"</p>"
+  })
+
 }
 
 

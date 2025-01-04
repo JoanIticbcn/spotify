@@ -1,6 +1,6 @@
 body{
     background-color: #121212;
-    margin: 50px 50px 110px 110px;
+    margin: 50px 50px 50px 50px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 h2{
@@ -23,8 +23,12 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px;
+    width: 100px;
     height: 30px;
+}
+
+button:hover{
+    background-color: #121212;
 }
 
 main{
@@ -35,8 +39,8 @@ main{
 }
 #cancons{
     border: 1px solid #121212;
-    width: 70%;
-    height: 100%;
+    width: 90%;
+    height: 900px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -44,38 +48,43 @@ main{
     align-items: center;
     justify-content: center;
     background-color:#1dd960;
+    overflow: auto;
+    box-shadow: 5px 5px 20px whitesmoke;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 section#lateral{
     border: 1px solid #121212;
     width: 30%;
-    height: 100%;
+    height: 60%;
     display: flex;
     flex-direction: column;
-    border-radius: 8%;
+    border-radius: 2%;
     align-items: center;
     justify-content: center;
-    margin-left: 10px;
+    margin-left: 50px;
     background-color: #1dd960;
     overflow: hidden;
+    box-shadow: 5px 5px 20px whitesmoke;
 }
 
 section#lateral img{
     width: 50%;
     height: auto;
     border-radius: 5%;
+    box-shadow: 5px 5px 20px #121212;
 }
 .track{
-    height: 280px;
-    width: 30%;
-    overflow: hidden;
+    height: 350px;
+    width: 290px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     flex-direction: column;
-    margin: 3px 3px 3px 3px;
+    margin: 15px 15px 15px 15px;
     background-color: white;
     border-radius: 10%;
-    padding: 3px;
+    box-shadow: 5px 5px 20px #121212;
 }
 
 .track img{
@@ -88,4 +97,20 @@ section#lateral img{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 12px;
     font-weight: bold;
+}
+
+.afegirc{
+    width: 55%;
+}
+
+#topbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#topbar img{
+    width: 200px;
+    height: 55px;
 }
