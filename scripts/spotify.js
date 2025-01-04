@@ -55,6 +55,12 @@ const getSpotifyAccessToken = function (clientId, clientSecret) {
 const searchSpotifyTracks = function (query, accessToken) {
   // Definim l’endpoint, la query és el valor de búsqueda.
   // Limitem la búsqueda a cançons i retornarà 12 resultats.
+  if(!query){
+    alert("No has entrat cap canço")
+  }
+  if(query.length<3){
+    alert("Has d'introduir 2 o més caracters")
+  }
   const searchUrl =
     `https://api.spotify.com/v1/search?q=${encodeURIComponent(
       query
