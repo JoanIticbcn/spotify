@@ -91,7 +91,8 @@ const searchSpotifyTracks = function (query, accessToken) {
         ButtonAfegir.textContent = "+ Afegir cançó"
         ButtonAfegir.className = "afegirc"
         ButtonAfegir.addEventListener("click", function () {
-          pass
+          localStorage.setItem("listid",localStorage.getItem("listid")+";"+data.tracks.items[i].id)
+          console.log(localStorage.getItem("listid"))
         })
         Objdiv.className = "track";
         Objdiv.textContent = data.tracks.items[i].name;
