@@ -103,6 +103,9 @@ const searchSpotifyTracks = function (query, accessToken) {
         Objdiv.appendChild(ButtonAfegir)
         ObjResult.appendChild(Objdiv);
       }
+      document.getElementById("dotzemes").addEventListener("click",function(){
+        dotzemes(data.tracks.next,tokenacces)
+      })
     })
     .catch((error) => {
       console.error("Error al buscar cançons:", error);
@@ -111,6 +114,44 @@ const searchSpotifyTracks = function (query, accessToken) {
 };
 
 
+const dotzemes = function(urlnext,accessToken){
+  fetch(urlnext, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      // Controlem si la petició i la resposta han anat bé.
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((data)=>{
+      let infTrack = data.tracks.items
+      for (let i = 0; i < data.tracks.items.length; i++) {
+        let Objdiv = document.createElement("div");
+        let ObjResult = document.getElementById("cancons");
+        let ButtonAfegir = document.createElement("button");
+        ButtonAfegir.textContent = "+ Afegir cançó"
+        ButtonAfegir.className = "afegirc"
+        ButtonAfegir.addEventListener("click", function () {
+          localStorage.setItem("listid",localStorage.getItem("listid")+";"+data.tracks.items[i].id)
+          console.log(localStorage.getItem("listid"))
+        })
+        Objdiv.className = "track";
+        Objdiv.textContent = data.tracks.items[i].name;
+        Objdiv.addEventListener("click", function () {
+          buscarartista(data.tracks.items[i].artists[0].id)
+        })
+        Objdiv.innerHTML = "<h1>" + data.tracks.items[i].name + "</h1>" + "<img src=" + data.tracks.items[i].album.images[0].url + ">" + "<h1>" + data.tracks.items[i].artists[0].name + "</h1>" + "<h1>" + data.tracks.items[i].album.name + "</h1>";
+        Objdiv.appendChild(ButtonAfegir)
+        ObjResult.appendChild(Objdiv);
+      }
+    })
+  }
 const buscarartista = function (idartist) {
   const urlEndpointArtist = "https://api.spotify.com/v1/artists/" + idartist
   let imatgeArtista;
