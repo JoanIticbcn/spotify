@@ -51,7 +51,7 @@ const getUser = async function () {
 };
 
 const getMultipleTracks = async function () {
-    let trackIds = localStorage.getItem("listid").replaceAll("null", "")
+    let trackIds = localStorage.getItem("listid").replaceAll("null","").substring(1)
     const url = `https://api.spotify.com/v1/tracks?ids=${trackIds}`;
     const response = await fetch(url, {
         method: "GET",
