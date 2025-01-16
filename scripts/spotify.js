@@ -112,7 +112,7 @@ const searchSpotifyTracks = function (query, accessToken) {
         ButtonAfegir.textContent = "+ Afegir cançó"
         ButtonAfegir.className = "afegirc"
         ButtonAfegir.addEventListener("click", function () {
-          localStorage.setItem("listid", localStorage.getItem("listid") + ";" + data.tracks.items[i].id)
+          localStorage.setItem("listid", localStorage.getItem("listid") + "," + data.tracks.items[i].id)
           console.log(localStorage.getItem("listid"))
         })
         Objdiv.className = "track";
@@ -159,7 +159,7 @@ const dotzemes = function (urlnext, accessToken) {
         ButtonAfegir.textContent = "+ Afegir cançó"
         ButtonAfegir.className = "afegirc"
         ButtonAfegir.addEventListener("click", function () {
-          localStorage.setItem("listid", localStorage.getItem("listid") + ";" + data.tracks.items[i].id)
+          localStorage.setItem("listid", localStorage.getItem("listid") + "," + data.tracks.items[i].id)
           console.log(localStorage.getItem("listid"))
         })
         Objdiv.className = "track";
