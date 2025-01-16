@@ -3,6 +3,27 @@ import { clientId, clientSecret } from "../env/client.js";
 const inputsong = document.getElementById("inputsong");
 const btnBuscar = document.getElementById("btnbuscar");
 const btnBorrar = document.getElementById("btnborrar");
+
+const URL = "https://accounts.spotify.com/authorize";
+const redirectUri = "http://127.0.0.1:5500/html/playlist.html";
+const scopes =
+  "playlist-modify-private user-library-modify playlist-modify-public";
+
+
+const autoritzar = function () {
+  const authUrl =
+    URL +
+    `?client_id=${clientId}` +
+    `&response_type=token` +
+    `&redirect_uri=${redirectUri}` +
+    `&scope=${scopes}`;
+
+
+  window.location.assign(authUrl);
+};
+
+document.getElementById("creaplaylist").addEventListener("click",autoritzar)
+
 btnBuscar.disabled = true;
 btnBorrar.disabled = true;
 document.getElementById("cancons").textContent = "Fes una busqueda"
@@ -55,10 +76,10 @@ const getSpotifyAccessToken = function (clientId, clientSecret) {
 const searchSpotifyTracks = function (query, accessToken) {
   // Definim l’endpoint, la query és el valor de búsqueda.
   // Limitem la búsqueda a cançons i retornarà 12 resultats.
-  if(!query){
+  if (!query) {
     alert("No has entrat cap canço")
   }
-  if(query.length<3){
+  if (query.length < 3) {
     alert("Has d'introduir 2 o més caracters")
   }
   const searchUrl =
@@ -91,7 +112,7 @@ const searchSpotifyTracks = function (query, accessToken) {
         ButtonAfegir.textContent = "+ Afegir cançó"
         ButtonAfegir.className = "afegirc"
         ButtonAfegir.addEventListener("click", function () {
-          localStorage.setItem("listid",localStorage.getItem("listid")+";"+data.tracks.items[i].id)
+          localStorage.setItem("listid", localStorage.getItem("listid") + ";" + data.tracks.items[i].id)
           console.log(localStorage.getItem("listid"))
         })
         Objdiv.className = "track";
@@ -103,8 +124,8 @@ const searchSpotifyTracks = function (query, accessToken) {
         Objdiv.appendChild(ButtonAfegir)
         ObjResult.appendChild(Objdiv);
       }
-      document.getElementById("dotzemes").addEventListener("click",function(){
-        dotzemes(data.tracks.next,tokenacces)
+      document.getElementById("dotzemes").addEventListener("click", function () {
+        dotzemes(data.tracks.next, tokenacces)
       })
     })
     .catch((error) => {
@@ -114,7 +135,7 @@ const searchSpotifyTracks = function (query, accessToken) {
 };
 
 
-const dotzemes = function(urlnext,accessToken){
+const dotzemes = function (urlnext, accessToken) {
   fetch(urlnext, {
     method: "GET",
     headers: {
@@ -129,7 +150,7 @@ const dotzemes = function(urlnext,accessToken){
       }
       return response.json();
     })
-    .then((data)=>{
+    .then((data) => {
       let infTrack = data.tracks.items
       for (let i = 0; i < data.tracks.items.length; i++) {
         let Objdiv = document.createElement("div");
@@ -138,7 +159,7 @@ const dotzemes = function(urlnext,accessToken){
         ButtonAfegir.textContent = "+ Afegir cançó"
         ButtonAfegir.className = "afegirc"
         ButtonAfegir.addEventListener("click", function () {
-          localStorage.setItem("listid",localStorage.getItem("listid")+";"+data.tracks.items[i].id)
+          localStorage.setItem("listid", localStorage.getItem("listid") + ";" + data.tracks.items[i].id)
           console.log(localStorage.getItem("listid"))
         })
         Objdiv.className = "track";
@@ -151,7 +172,7 @@ const dotzemes = function(urlnext,accessToken){
         ObjResult.appendChild(Objdiv);
       }
     })
-  }
+}
 const buscarartista = function (idartist) {
   const urlEndpointArtist = "https://api.spotify.com/v1/artists/" + idartist
   let imatgeArtista;
@@ -188,19 +209,19 @@ const artistaInformaciolateral = function (imatgeArtista, nomdelgrup, popularita
 
 const getTopTracks = function (imatgeArtista, nomdelgrup, popularitat, generes, seguidors, idartist) {
   const url = `https://api.spotify.com/v1/artists/${idartist}/top-tracks`;
-  fetch(url,{
+  fetch(url, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${tokenacces}`,
       "Content-Type": "application/json",
     },
-  }).then((response)=>{
+  }).then((response) => {
     if (!response.ok) {
       throw new Error(`Error: ${response.status} - ${response.statusText}`);
     }
     return response.json()
-  }).then((data)=>{
-    document.getElementById("lateral").innerHTML = "***" + "<img src=" + imatgeArtista + ">" + "<h1>" + nomdelgrup + "</h1>" + "<h4>Populartitat </h4>" + "<p>" + popularitat + "</p>" + "<h4>Generes </h4>" + "<p>" + generes + "</p>" + "<h4>Seguidors </h4>" + "<p>" + seguidors + "</p>" + "<h1> TOP TRACKS</h1>"+"<p>"+data.tracks[0].name+"</p>"+"<p>"+data.tracks[1].name+"</p>"+"<p>"+data.tracks[2].name+"</p>"
+  }).then((data) => {
+    document.getElementById("lateral").innerHTML = "***" + "<img src=" + imatgeArtista + ">" + "<h1>" + nomdelgrup + "</h1>" + "<h4>Populartitat </h4>" + "<p>" + popularitat + "</p>" + "<h4>Generes </h4>" + "<p>" + generes + "</p>" + "<h4>Seguidors </h4>" + "<p>" + seguidors + "</p>" + "<h1> TOP TRACKS</h1>" + "<p>" + data.tracks[0].name + "</p>" + "<p>" + data.tracks[1].name + "</p>" + "<p>" + data.tracks[2].name + "</p>"
   })
 
 }
