@@ -1,4 +1,4 @@
-//Funcio gettoken
+//Funcio gettoken i variables globals
 let token = "";
 let user_id = "";
 let selectedPlayList = "";
