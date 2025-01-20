@@ -73,7 +73,7 @@ const getMultipleTracks = async function () {
                     if (userresponses && selectedPlayList) {
                         afegirCancoaLaPlaylist(dada.tracks[i].uri)
                         getTracksFromPlaylist()
-                        //alert("Canco afegida correctament")
+                        alert("Canco afegida correctament")
                     } else {
                         alert("Has de seleccionar una playlist per poder afegir la canço")
                     }
@@ -81,7 +81,11 @@ const getMultipleTracks = async function () {
                 let btnDel = document.createElement("button")
                 btnDel.textContent = "DEL"
                 btnDel.addEventListener("click", function () {
-
+                    let userrrresponse = confirm("Estas segur de que vols borrar aquesta canco de la llista de cançons?")
+                    if(userrrresponse){
+                        getTracksFromPlaylist()
+                        alert("Canco borrada correctament")
+                    }
                 })
                 objDiv3.textContent = dada.tracks[i].name + " - " + dada.tracks[i].artists[0].name
                 objDiv3.appendChild(btnAdd)
@@ -91,11 +95,10 @@ const getMultipleTracks = async function () {
 
             }
         } else {
-            console.log("No hi ha cancons")
+            console.log("No hi ha cancons per mostrar")
         }
-
     } catch (error) {
-        console.log("Error", error)
+        console.log("Error ", error)
     }
 }
 //Agafa i carrega totes les cancons de la playlist i les renderitza
@@ -133,7 +136,7 @@ const getTracksFromPlaylist = async function () {
             console.log("No hi ha cancons per mostrar")
         }
     } catch (error) {
-        console.log("Error"+error)
+        console.log("Error "+error)
     }
 }
 //Borrar canco de la playlist donada el seu trackURI metode que va quan clickem a DEL
@@ -153,7 +156,7 @@ const borrarCancodeLaPlaylist = async function (trackUri) {
         });
         
     } catch (error) {
-        console.log(error)
+        console.log("Error "+error)
     }
 }
 //Afegir canco a la playlist endpoint donada el trackUri que s'ha d'afegir
@@ -171,7 +174,7 @@ const afegirCancoaLaPlaylist = async function (trackUri) {
         });
         
     } catch (error) {
-        console.log(error)
+        console.log("Error"+error)
     }
     
 }
@@ -192,7 +195,7 @@ const updateSpotifyPlaylistName = async function (new_name) {
     
         })
     } catch (error) {
-        console.log(error)
+        console.log("Error"+error)
     }
     
 }
