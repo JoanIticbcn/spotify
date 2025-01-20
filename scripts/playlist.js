@@ -1,7 +1,7 @@
 //Funcio gettoken
 let token = "";
 let user_id = "";
-let selectedPlayList="";
+let selectedPlayList = "";
 document.getElementById("div2").textContent = "Selecciona una playlist"
 function getToken() {
     token = window.location.href.split("access_token=")[1];
@@ -51,64 +51,154 @@ const getUser = async function () {
 };
 
 const getMultipleTracks = async function () {
-    let trackIds = localStorage.getItem("listid").replaceAll("null","").substring(1)
+    let trackIds = localStorage.getItem("listid").replaceAll("null", "").substring(1)
     const url = `https://api.spotify.com/v1/tracks?ids=${trackIds}`;
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    dada = await response.json()
-    for (let i = 0; i < dada.tracks.length; i++) {
-        let objDiv3 = document.createElement("div")
-        let btnAdd = document.createElement("button")
-        btnAdd.textContent = "ADD"
-        btnAdd.addEventListener("click", function () {
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        dada = await response.json()
+        if (dada) {
+            console.log(dada)
+            for (let i = 0; i < dada.tracks.length; i++) {
+                let objDiv3 = document.createElement("div")
+                let btnAdd = document.createElement("button")
+                btnAdd.textContent = "ADD"
+                btnAdd.addEventListener("click", function () {
+                    let userresponses = confirm("Estas segur que vols afegir aquesta canço a la playlist seleccionada?")
+                    if (userresponses && selectedPlayList) {
+                        afegirCancoaLaPlaylist(dada.tracks[i].uri)
+                        getTracksFromPlaylist()
+                        //alert("Canco afegida correctament")
+                    } else {
+                        alert("Has de seleccionar una playlist per poder afegir la canço")
+                    }
+                })
+                let btnDel = document.createElement("button")
+                btnDel.textContent = "DEL"
+                btnDel.addEventListener("click", function () {
 
-        })
-        let btnDel = document.createElement("button")
-        btnDel.textContent = "DEL"
-        btnDel.addEventListener("click", function () {
+                })
+                objDiv3.textContent = dada.tracks[i].name + " - " + dada.tracks[i].artists[0].name
+                objDiv3.appendChild(btnAdd)
+                objDiv3.appendChild(btnDel)
+                let ObjResult3 = document.getElementById("div3")
+                ObjResult3.appendChild(objDiv3)
 
-        })
-        objDiv3.textContent = dada.tracks[i].name + " - " + dada.tracks[i].artists[0].name
-        objDiv3.appendChild(btnAdd)
-        objDiv3.appendChild(btnDel)
-        let ObjResult3 = document.getElementById("div3")
-        ObjResult3.appendChild(objDiv3)
+            }
+        } else {
+            console.log("No hi ha cancons")
+        }
 
+    } catch (error) {
+        console.log("Error", error)
     }
-
 }
 
 const getTracksFromPlaylist = async function () {
     //La variable selectedPlayList és la playlist que hem seleccionem
     const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}/tracks`;
-
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-    });
-
-    const dades = await response.json()
-    console.log(dades)
-    document.getElementById("div2").innerHTML =""
-    for(let i=0;i<dades.items.length;i++){
-        let objDiv = document.createElement("div")
-        objDiv.textContent=dades.items[i].track.name +" - "+ dades.items[i].track.artists[0].name+" - "+dades.items[i].added_at
-        let btnDel = document.createElement("button")
-        btnDel.textContent = "DEL"
-        btnDel.addEventListener("click",function(){
-
-        })
-        objDiv.appendChild(btnDel)
-        let ObjResult2 = document.getElementById("div2")
-        ObjResult2.appendChild(objDiv)
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        });
+    
+        const dades = await response.json()
+        if (dades) {
+            document.getElementById("div2").innerHTML = ""
+            for (let i = 0; i < dades.items.length; i++) {
+                let objDiv = document.createElement("div")
+                objDiv.textContent = dades.items[i].track.name + " - " + dades.items[i].track.artists[0].name + " - " + dades.items[i].added_at
+                let btnDel = document.createElement("button")
+                btnDel.textContent = "DEL"
+                btnDel.addEventListener("click", function () {
+                    let userResponse = confirm("Estas segur que vols borrar aquesta canço de la playlist?");
+                    if (userResponse) {
+                        borrarCancodeLaPlaylist(dades.items[i].track.uri)
+                        getTracksFromPlaylist()
+                    }
+                })
+                objDiv.appendChild(btnDel)
+                let ObjResult2 = document.getElementById("div2")
+                ObjResult2.appendChild(objDiv)
+            }
+        }else{
+            console.log("No hi ha cancons per mostrar")
+        }
+    } catch (error) {
+        console.log("Error"+error)
     }
 }
+
+const borrarCancodeLaPlaylist = async function (trackUri) {
+    //La variable selectedPlayList és la playlist que hem seleccionem
+    const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}/tracks`;
+    // Realizar la solicitud a la API
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                tracks: [{ uri: trackUri }] // Afegir la URIs que volem eliminar
+            })
+        });
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const afegirCancoaLaPlaylist = async function (trackUri) {
+    const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}/tracks`;
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                uris: [trackUri], // Afegir la llista de URIs que volem afegir
+            }),
+        });
+        
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+const updateSpotifyPlaylistName = async function (new_name) {
+    const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}`
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "name": new_name
+            })
+    
+        })
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+//Guardar el nom de la playlist
+document.getElementById("saveplaylistname").addEventListener("click", function () {
+    updateSpotifyPlaylistName(document.getElementById("inputplaylist").value)
+})
 
 getToken()
 getUser()
