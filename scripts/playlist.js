@@ -3,6 +3,7 @@ let token = "";
 let user_id = "";
 let selectedPlayList = "";
 document.getElementById("div2").textContent = "Selecciona una playlist"
+//Funcio per agafar el token
 function getToken() {
     token = window.location.href.split("access_token=")[1];
 }
@@ -49,7 +50,7 @@ const getUser = async function () {
         console.error("Error en obtenir l'usuari:", error);
     }
 };
-
+//Agafa i carrega les tracks desde el localstorage amb els botons ADD i DEL i informacio del track
 const getMultipleTracks = async function () {
     let trackIds = localStorage.getItem("listid").replaceAll("null", "").substring(1)
     const url = `https://api.spotify.com/v1/tracks?ids=${trackIds}`;
@@ -97,7 +98,7 @@ const getMultipleTracks = async function () {
         console.log("Error", error)
     }
 }
-
+//Agafa i carrega totes les cancons de la playlist i les renderitza
 const getTracksFromPlaylist = async function () {
     //La variable selectedPlayList és la playlist que hem seleccionem
     const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}/tracks`;
@@ -135,7 +136,7 @@ const getTracksFromPlaylist = async function () {
         console.log("Error"+error)
     }
 }
-
+//Borrar canco de la playlist donada el seu trackURI metode que va quan clickem a DEL
 const borrarCancodeLaPlaylist = async function (trackUri) {
     //La variable selectedPlayList és la playlist que hem seleccionem
     const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}/tracks`;
@@ -155,7 +156,7 @@ const borrarCancodeLaPlaylist = async function (trackUri) {
         console.log(error)
     }
 }
-
+//Afegir canco a la playlist endpoint donada el trackUri que s'ha d'afegir
 const afegirCancoaLaPlaylist = async function (trackUri) {
     const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}/tracks`;
     try {
@@ -175,6 +176,7 @@ const afegirCancoaLaPlaylist = async function (trackUri) {
     
 }
 
+//Actualitzar el nom de la playlist
 const updateSpotifyPlaylistName = async function (new_name) {
     const url = `https://api.spotify.com/v1/playlists/${selectedPlayList}`
     try {
@@ -195,7 +197,7 @@ const updateSpotifyPlaylistName = async function (new_name) {
     
 }
 
-//Guardar el nom de la playlist
+//Actualitzar el nom de la playlist
 document.getElementById("saveplaylistname").addEventListener("click", function () {
     updateSpotifyPlaylistName(document.getElementById("inputplaylist").value)
 })
